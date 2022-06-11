@@ -21,7 +21,10 @@ class MainActivity : AppCompatActivity() {
                 try {
                     val content = BufferedReader(InputStreamReader(urlConnection.inputStream))
                     val json = JSONObject(content.readText())
-                    Log.i("Debug", json.getJSONObject("parse").getJSONObject("text").getString("*"))
+                    val regex = Regex("<li>([^<]+)<\\/li>")
+                    for (m in regex.findAll(json.getJSONObject("parse").getJSONObject("text").getString("*"))) {
+                        Log.d("Debug", m.groups[1]!!.value)
+                    }
                 } finally {
                     urlConnection.disconnect()
                 }
